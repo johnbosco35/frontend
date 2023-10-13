@@ -1,20 +1,22 @@
 /** @format */
-import { BsLayoutSidebarInset } from "react-icons/bs";
 import { HiOutlineSun } from "react-icons/hi";
 import { BiLogOut } from "react-icons/bi";
 import { IoSettingsOutline, IoPersonSharp } from "react-icons/io5";
 import { AiOutlineHome } from "react-icons/ai";
 import styled from "styled-components";
-import { NavLink } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logOut } from "../Global/GlobalState";
 
 type iSide = {
   condition: boolean;
 };
 
 const Sider: React.FC<iSide> = ({ condition }) => {
-  const [toggle, setToggle] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
+  // console.log(dispatch);
   return (
     <div>
       <Container style={{ transition: "all 350ms" }}>
@@ -113,9 +115,14 @@ const Sider: React.FC<iSide> = ({ condition }) => {
               </NavLink>
             )}
           </Logo>
-          <Down>
+          <Down
+            onClick={() => {
+              dispatch(logOut);
+              navigate("/signIn");
+            }}
+          >
             <BiLogOut size={25} style={{ marginLeft: "10px" }} />
-            {condition && <span>Log Out</span>}
+            {condition && <span>LogOut</span>}
           </Down>
         </Main>
       </Container>
@@ -128,7 +135,7 @@ export default Sider;
 const Down = styled.div`
   display: flex;
   align-items: center;
-  /* justify-content: center; */
+  cursor: pointer;
   margin-top: 150px;
 
   span {
@@ -164,11 +171,13 @@ const BsLayoutSidebarInsetReverse = styled.div`
 `;
 
 const Container = styled.div`
-  height: 93vh;
+  height: 100vh;
   background-color: #fafbfc;
   border-right: 2px solid silver;
   display: flex;
+  position: fixed;
   align-items: center;
+
   @media screen and (max-width: 768px) {
     width: 70px;
   }

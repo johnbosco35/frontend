@@ -13,10 +13,14 @@ import * as yup from "yup";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { signInUser } from "../Apis/AuthApis";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { userInfo } from "../Global/GlobalState";
 // import { useState } from "react";
 
 const SignIn = () => {
-  const nagviate = useNavigate();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const schema = yup
     .object({
       email: yup.string().required().email(),
@@ -32,13 +36,19 @@ const SignIn = () => {
     resolver: yupResolver(schema),
   });
   const onSubmit = handleSubmit(async (data: any) => {
-    signInUser({
-      email: data?.email,
-      password: data?.password,
-    }).then(() => {
-      toast("SignIn Successfully");
-      nagviate("/home");
-    });
+    await axios
+      .post(`http://localhost:2020/api/v1/signIn`, {
+        email: data?.email,
+        password: data?.password,
+      })
+      .then((res: any) => {
+        dispatch(userInfo(res!.data!.data!));
+        navigate("/home");
+        return res.data.data;
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
   });
   return (
     <div>

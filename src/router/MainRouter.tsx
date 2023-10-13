@@ -2,7 +2,6 @@
 
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "../components/common/Layout";
-import HomeScreen from "../components/home/HomeScreen";
 import Home from "../components/home/Home";
 import Register from "../components/auth/Register";
 import SignIn from "../components/auth/SignIn";
@@ -10,6 +9,7 @@ import Setting from "../components/home/Setting";
 import Task from "../components/home/Task";
 import Board from "../components/home/Board";
 import Assigned from "../components/home/Assigned";
+import PrivateRouter from "./PrivateRouter";
 
 export const MainRouter = createBrowserRouter([
   {
@@ -30,7 +30,11 @@ export const MainRouter = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <HomeScreen />,
+        element: (
+          <PrivateRouter>
+            <Board />
+          </PrivateRouter>
+        ),
       },
       {
         path: "/home/settings",
@@ -39,10 +43,6 @@ export const MainRouter = createBrowserRouter([
       {
         path: "/home/task",
         element: <Task />,
-      },
-      {
-        path: "/home/board",
-        element: <Board />,
       },
       {
         path: "/home/assigned",

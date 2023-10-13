@@ -23,6 +23,6 @@ const GlobalState: any = createSlice({
   },
 });
 
-export const { userInfo, onToggle } = GlobalState.actions;
+export const { userInfo, onToggle, logOut } = GlobalState.actions;
 
 export default GlobalState.reducer;

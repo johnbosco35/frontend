@@ -11,15 +11,31 @@ import {
 } from "react-icons/bs";
 import { useEffect, useState } from "react";
 import moment from "moment";
+import { useSelector } from "react-redux";
+import { createTask } from "../Apis/TaskApis";
+import axios from "axios";
 
 const Board = () => {
+  const user = useSelector((state: any) => state.change.user);
   const [greeting, setGreeting] = useState<string>(getGreeting());
   const [side, setSide] = useState<Boolean>(false);
+  const [title, setTitle] = useState("");
+  const [data, setData] = useState<any>();
 
   const Toggle = () => {
     setSide(!side);
   };
 
+  const findOneUser = async () => {
+    await axios
+      .get(`http://localhost:2020/api/v1/oneUser/${user._id}`)
+      .then((res: any) => {
+        setData(res.data.data.Task);
+      });
+  };
+  useEffect(() => {
+    findOneUser();
+  }, [data]);
   function getGreeting(): string {
     const currentTime = moment();
     const currentHour = currentTime.hours();
@@ -49,7 +65,9 @@ const Board = () => {
         {greeting === "Good afternoon" ? <BsSun size={20} /> : null}
         {greeting === "Good evening" ? <BsSunset size={20} /> : null}
         {greeting === "Good night" ? <BsMoonStars size={20} /> : null}
-        <span>{greeting},JayBee</span>
+        <span>
+          {greeting},{user.name}
+        </span>
       </Date>
       <Title>
         <span>My task</span>
@@ -58,6 +76,9 @@ const Board = () => {
         <Text>
           <Circle></Circle>
           <input
+            onChange={(e: any) => {
+              setTitle(e.target.value);
+            }}
             type="text"
             placeholder="Add Task"
             style={{
@@ -79,18 +100,26 @@ const Board = () => {
             <IoIosNotifications size={20} />
             <BsRepeat size={20} />
           </Left>
-          <Right>
+          <Right
+            onClick={() => {
+              createTask({ Title: title }, user._id);
+            }}
+          >
             <span>Add</span>
           </Right>
         </Card>
       </Holder>
-      <Text1 onClick={Toggle}>
-        <Circle></Circle>
-        <Task>
-          <span>Cooking</span>
-          <p>Tasks</p>
-        </Task>
-      </Text1>
+
+      {data?.map((props: any) => (
+        <Text1 onClick={Toggle}>
+          <Circle type="checkbox"></Circle>
+          <Task>
+            <span>{props.Title}</span>
+            <p>Tasks</p>
+          </Task>
+        </Text1>
+      ))}
+
       {side ? (
         <Side>
           <span>Assigned Task</span>
@@ -168,13 +197,13 @@ const Task = styled.div`
 `;
 
 const Text1 = styled.div`
-  width: 95%;
+  width: 80%;
   height: 45px;
   background-color: white;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   display: flex;
   align-items: center;
-  margin-left: 50px;
+  margin-left: 250px;
   margin-top: 35px;
   cursor: pointer;
   border-radius: 5px;
@@ -182,13 +211,13 @@ const Text1 = styled.div`
 `;
 
 const Title = styled.div`
-  margin-left: 20px;
+  margin-left: 250px;
   font-family: cursive;
 `;
 
 const Date = styled.div`
-  margin-left: 20px;
-  margin-top: 10px;
+  margin-left: 250px;
+  margin-top: 60px;
   font-family: cursive;
   font-size: 29px;
   font-weight: 600;
@@ -215,7 +244,7 @@ const Left = styled.div`
   margin-left: 10px;
 `;
 
-const Circle = styled.div`
+const Circle = styled.input`
   width: 20px;
   height: 20px;
   border-radius: 50%;
@@ -250,5 +279,5 @@ const Holder = styled.div`
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   border-radius: 5px;
   margin-top: 50px;
-  margin-left: 50px;
+  margin-left: 250px;
 `;

@@ -1,6 +1,5 @@
 /** @format */
 
-import React from "react";
 import styled from "styled-components";
 import img from "../../assets/undraw_collaboration_re_vyau.svg";
 

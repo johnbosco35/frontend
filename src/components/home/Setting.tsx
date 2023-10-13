@@ -6,17 +6,32 @@ import { RiImageEditFill } from "react-icons/ri";
 
 const Setting = () => {
   const [change, setchange] = useState<boolean>(false);
+  const [input, setInput] = useState("");
+  const [input1, setInput1] = useState("");
 
   const Toggle = () => {
     setchange(!change);
   };
-
+  console.log(input);
+  console.log(input1);
   return (
     <div>
       <Container>
         <Left>
-          <input type="text" placeholder="Name" />
-          <input type="text" placeholder="Email" />
+          <input
+            type="text"
+            placeholder="Name"
+            onChange={(e: any) => {
+              setInput(e.target.value);
+            }}
+          />
+          <input
+            type="text"
+            placeholder="Email"
+            onChange={(e: any) => {
+              setInput1(e.target.value);
+            }}
+          />
           <Box>
             <span>Update</span>
           </Box>
@@ -69,6 +84,7 @@ const Card = styled.div`
   font-weight: 500px;
   font-family: cursive;
   cursor: pointer;
+  margin-left: 350px;
 
   span {
     width: 100%;
@@ -101,8 +117,8 @@ const Button = styled.button`
   font-family: cursive;
   border: 1px solid silver;
   position: absolute;
-  left: 880px;
-  top: 390px;
+  left: 1000px;
+  top: 400px;
 
   span {
     color: white;
@@ -115,10 +131,11 @@ const Circle = styled.div`
   border-radius: 50%;
   background-color: red;
   border: 1px solid silver;
+  margin-left: 250px;
 `;
 
 const Right = styled.div`
-  width: 572px;
+  width: 200px;
   height: 600px;
   border-left: 1px solid silver;
   display: flex;
@@ -128,7 +145,7 @@ const Right = styled.div`
 `;
 
 const Left = styled.div`
-  width: 572px;
+  width: 882px;
   height: 600px;
   border-right: 1px solid silver;
   display: flex;
@@ -140,6 +157,7 @@ const Left = styled.div`
     width: 400px;
     height: 25px;
     outline: none;
+    margin-left: 150px;
     margin: 10px;
     padding-left: 10px;
     border-radius: 5px;

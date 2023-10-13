@@ -12,6 +12,7 @@ const Layout = () => {
     <div>
       <Header />
       <div style={{ display: "flex" }}>
+        <Sider condition={show ? true : false} />
         <div
           style={{
             position: "absolute",
@@ -25,7 +26,6 @@ const Layout = () => {
         >
           {show ? <AiOutlineArrowLeft /> : <AiOutlineArrowRight />}
         </div>
-        <Sider condition={show ? true : false} />
         <Outlet />
       </div>
     </div>

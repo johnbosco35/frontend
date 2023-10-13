@@ -53,15 +53,15 @@ export const removeUserImage = async (data: any) => {
   await axios
     .patch(`${Url}/:userID/RemoveuserImag`, data)
     .then((res: any) => {
-      console.log(res);
+      return res;
     })
     .catch((error: any) => {
       console.log(error);
     });
 };
 
-export const signGoogle = async (data: any) => {
-  await axios.get("http://localhost:2020/veri/google").then(() => {
-    console.log("Sent");
+export const findOneUser = async (id: any) => {
+  await axios.get(`${Url}/oneUser/${id}`).then((res: any) => {
+    console.log(res.data);
   });
 };
